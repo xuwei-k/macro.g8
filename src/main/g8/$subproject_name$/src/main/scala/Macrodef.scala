@@ -1,0 +1,6 @@
+package $organization$
+
+object Macrodef{
+
+}
+
