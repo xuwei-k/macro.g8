@@ -13,7 +13,7 @@ object build extends Build{
     shellPrompt in ThisBuild := { state =>
       Project.extract(state).currentRef.project + "> "
     },
-    scalacOptions ++= Seq("-deprecation","-Xmacros"),
+    scalacOptions ++= Seq("-deprecation"),
     initialCommands in console := {
       "$organization$".map{"import " + _ + "._"}.mkString("\n")
     },
@@ -22,8 +22,13 @@ object build extends Build{
   )
 
   lazy val root = Project(
+    "root",
+    file(".")
+  )aggregate($name$,$subproject_name$)
+
+  lazy val $name$ = Project(
     "$name$",
-    file("."),
+    file("$name$"),
     settings = buildSettings ++ Seq(
       libraryDependencies ++= Seq(
       )
@@ -34,8 +39,11 @@ object build extends Build{
     "$subproject_name$",
     file("$subproject_name$"),
     settings = buildSettings ++ Seq(
-      libraryDependencies ++= Seq(
-      )
+      libraryDependencies <++= scalaVersion{ v =>
+        Seq(
+          "org.scala-lang" % "scala-reflect" % v
+        )
+      }
     )
   )
 }
