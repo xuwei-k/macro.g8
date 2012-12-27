@@ -5,9 +5,8 @@ object build extends Build{
   val buildSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "$scala_version$",
     resolvers ++= Seq(
-      "https://oss.sonatype.org/content/repositories/releases",
-      "https://oss.sonatype.org/content/repositories/snapshots"
-    ).map{u => u at u},
+      Opts.resolver.sonatypeReleases
+    ),
     organization := "$organization$",
     version := "$version$",
     shellPrompt in ThisBuild := { state =>
@@ -24,6 +23,12 @@ object build extends Build{
   lazy val root = Project(
     "root",
     file(".")
+  ).settings(
+    buildSettings ++ Seq(
+      publishArtifact := false,
+      publish := {},
+      publishLocal := {}
+    ) : _*
   )aggregate($name$,$subproject_name$)
 
   lazy val $name$ = Project(
